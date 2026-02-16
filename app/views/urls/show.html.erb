@@ -1,0 +1,52 @@
+<div class="bg-base-300 flex flex-col space-y-8 py-12 px-4 items-center">
+  <div class="card bg-base-100 shadow-2xl w-3xl">
+    <div class="card-body space-y-6">
+      <h2 class="card-title text-2xl font-bold">
+        Link Preview
+      </h2>
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text font-medium">Target URL</span>
+        </label>
+        <input 
+          class="input input-bordered w-full bg-base-200 text-base-content/70"
+          value="<%= @url.target_url %>" 
+          readonly 
+        />
+      </div>
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text font-medium">Shortened Link</span>
+        </label>
+        <div class="flex gap-2">
+          <div class="join flex-1">
+            <input 
+              class="input input-bordered join-item w-full bg-base-200"
+              value="<%= request.base_url %>/<%= @url.short_code %>" 
+              readonly 
+            />
+            <button 
+              type="button" 
+              class="btn btn-primary join-item"
+              onclick="navigator.clipboard.writeText('<%= request.base_url %>/<%= @url.short_code %>')">
+              Copy
+            </button>
+          </div>
+          <%= link_to "Visit", "/#{@url.short_code}", 
+              class: "btn btn-neutral", 
+              target: "_blank" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card bg-base-100 shadow-2xl w-3xl">
+    <div class="card-body">
+      <h2 class="card-title text-2xl font-bold">
+        Events
+      </h2>
+      <div class="text-sm text-base-content/60">
+        No events yet.
+      </div>
+    </div>
+  </div>
+</div>
