@@ -1,0 +1,19 @@
+<div data-controller="theme"
+     class="navbar bg-base-100 shadow-sm">
+  <div class="flex-1">
+    <%= link_to "🔗 URL Shortener", root_path,
+        class: "btn btn-ghost text-lg" %>
+    <%= link_to "Create New", root_path,
+        class: "btn btn-primary btn-outline btn-sm" %>
+  </div>
+  <div class="flex-none items-center gap-2">
+    <label class="swap swap-rotate btn btn-ghost btn-square">
+      <input type="checkbox"
+          data-theme-target="toggle"
+           data-action="click->theme#toggleTheme"
+      id="theme-toggle" />
+      <span class="swap-off text-2xl">☀️</span>
+      <span class="swap-on text-2xl">🌘</span>
+    </label>
+  </div>
+</div>
