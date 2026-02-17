@@ -10,7 +10,7 @@ class Url < ApplicationRecord
   private
   def generate_short_code
     return if short_code.present?
-    short_code = ShortCodeGenerator.generate(id)
+    short_code = ShortCodeGenerator.new(id).call
     update_column(:short_code, short_code)
   end
 end
