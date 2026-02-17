@@ -1,4 +1,6 @@
 class Url < ApplicationRecord
+  has_many :visits, dependent: :destroy
+
   validates :target_url, presence: true, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]), message: "must be a valid HTTP or HTTPS URL" }
   validates :short_code, uniqueness: true
   after_create :generate_short_code
