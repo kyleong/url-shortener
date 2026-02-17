@@ -14,10 +14,13 @@ class UrlsController < ApplicationController
   end
 
   def show
+    @visit_count = @url.visits.count
   end
 
   def redirect
     @url = Url.find_by!(short_code: params[:short_code])
+    LogVisitService.new(@url, request).call!
+
     if @url.nil? || !@url.is_active
       render plain: "URL not found", status: :not_found
     else
