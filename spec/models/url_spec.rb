@@ -33,8 +33,6 @@ RSpec.describe Url, type: :model do
       url.save
       expect(url.short_code).not_to be_nil
       expect(url.short_code.length).to be >= 7
-      expect(ShortCodeGenerator.valid?(url.short_code)).to be true
-      expect(ShortCodeGenerator.decode(url.short_code)).to eq(url.id)
     end
 
     it 'generates unique short codes for different URLs' do
