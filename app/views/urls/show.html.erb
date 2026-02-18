@@ -44,7 +44,10 @@
       <h2 class="card-title text-2xl font-bold">
         Events
       </h2>
-      <%= render partial: "visits_table", locals: { visits: @url.visits.limit(10).order(created_at: :desc) } %>
+      <div class="h-64 overflow-auto">
+        <%= turbo_stream_from @url.id %>
+        <%= render "visits", url: @url %>
+      <div>
     </div>
   </div>
 </div>

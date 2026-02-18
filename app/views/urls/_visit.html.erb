@@ -1,0 +1,20 @@
+<tr id="<%= dom_id(visit) %>">
+  <td>
+    <%= visit.visited_at&.localtime&.strftime("%Y-%m-%d %H:%M:%S") %>
+  </td>
+  <td>
+    <%= visit.ip_address %>
+  </td>
+  <td>
+    <% if visit.country.present? && visit.city.present? %>
+      <%= link_to(
+            "#{visit.country.tr('A-Z', "\u{1F1E6}-\u{1F1FF}")} #{visit.city}",
+            "https://maps.google.com/?q=#{visit.latitude},#{visit.longitude}",
+            class: "cursor-pointer hover:underline",
+            target: "_blank"
+          ) %>
+    <% else %>
+      -
+    <% end %>
+  </td>
+</tr>

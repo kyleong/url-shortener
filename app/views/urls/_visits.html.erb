@@ -1,0 +1,14 @@
+<table class="table table-sm table-zebra w-full table-fixed table-pin-rows">
+  <thead>
+    <tr>
+      <th>Visited At</th>
+      <th>IP Address</th>
+      <th>Location</th>
+    </tr>
+  </thead>
+  <tbody id="visits">
+    <% url.visits.order(visited_at: :desc).each do |visit| %>
+      <%= render "urls/visit", visit: visit %>
+    <% end %>
+  </tbody>
+</table>
