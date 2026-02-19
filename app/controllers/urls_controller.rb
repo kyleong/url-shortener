@@ -9,6 +9,7 @@ class UrlsController < ApplicationController
   def create
     @url = Url.new(url_params.merge(session_id: request.session.id))
     if @url.save
+      flash[:short_code] = @url.short_code
       redirect_to root_path, notice: "Your shortened URL is: #{(@url.short_code)}"
     else
       render :new, status: :unprocessable_entity
