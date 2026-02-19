@@ -3,7 +3,7 @@ class Url < ApplicationRecord
 
   validates :target_url, presence: true, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]), message: "must be a valid HTTP or HTTPS URL" }
   validates :short_code, uniqueness: true
-  after_create :generate_short_code
+  after_create :generate_short_code, :set_active
 
   def to_param
     short_code
@@ -14,5 +14,9 @@ class Url < ApplicationRecord
     return if short_code.present?
     short_code = ShortCodeGenerator.new(id).call
     update_column(:short_code, short_code)
+  end
+
+  def set_active
+    update_column(:is_active, true)
   end
 end

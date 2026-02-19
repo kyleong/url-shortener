@@ -1,13 +1,15 @@
 class UrlsController < ApplicationController
   before_action :set_url, only: %i[ show ]
   def new
+    session[:initialized] ||= true
     @url = Url.new
+    @urls = Url.where(session_id: request.session.id.to_s).order(created_at: :desc)
   end
 
   def create
-    @url = Url.new(url_params.merge(is_active: true))
+    @url = Url.new(url_params.merge(session_id: request.session.id))
     if @url.save
-      redirect_to url_path(@url.short_code), notice: "Your shortened URL is: #{(@url.short_code)}"
+      redirect_to root_path, notice: "Your shortened URL is: #{(@url.short_code)}"
     else
       render :new, status: :unprocessable_entity
     end
@@ -18,7 +20,7 @@ class UrlsController < ApplicationController
   end
 
   def redirect
-    @url = Url.find_by!(short_code: params[:short_code])
+    @url = Url.find_by(short_code: params[:short_code])
     LogVisitService.new(@url, request).call!
 
     if @url.nil? || !@url.is_active
