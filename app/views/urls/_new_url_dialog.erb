@@ -1,0 +1,25 @@
+<% if flash[:short_code] %>
+  <input type="checkbox" id="created_modal" class="modal-toggle" checked />
+  <div class="modal">
+    <div class="modal-box">
+      <label for="created_modal"
+           class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+        ✕
+      </label>
+      <h3 class="font-bold text-lg">Your link has been created! 🎊</h3>
+      <p class="mt-4">Copy your new short link to share it!</p>
+      <div class="flex items-center justify-center p-10 bg-primary-content rounded-lg mt-4">
+        <div class="flex gap-2 items-center">
+          <%= link_to "#{request.host_with_port}/#{flash[:short_code]}", "#{request.host_with_port}/#{flash[:short_code]}", class: "text-lg text-primary hover:underline", target: "_blank" %>
+          <div>
+            <%= lucide_icon("copy", class: "cursor-pointer", onclick: "navigator.clipboard.writeText('#{request.base_url}/#{flash[:short_code]}')", size:20) %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-action">
+        <%= link_to lucide_icon("chart-no-axes-column", size:16) + " View Usage" , url_path(flash[:short_code]), class: "btn btn-primary" %>
+        <label for="created_modal" class="btn">Close</label>
+      </div>
+    </div>
+  </div>
+<% end %>
