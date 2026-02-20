@@ -17,7 +17,6 @@ class UrlsController < ApplicationController
   end
 
   def show
-    @visit_count = @url.visits.count
   end
 
   def redirect
