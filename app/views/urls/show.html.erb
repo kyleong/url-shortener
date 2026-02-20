@@ -1,40 +1,48 @@
-<div class="bg-base-300 flex flex-col space-y-8 py-12 px-4 items-center">
+<%= turbo_stream_from @url.id %>
+<div class="flex flex-col space-y-8 pb-12 px-4 items-center">
+  <div class="max-w-3xl w-full my-4">
+    <%= link_to lucide_icon("arrow-left", size:16) + " Home", root_path, class: "btn btn-ghost" %>
+  </div>
   <div class="card bg-base-100 shadow-2xl max-w-3xl w-full">
-    <div class="card-body space-y-6">
-      <h2 class="card-title text-2xl font-bold">
-        Link Preview
-      </h2>
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text font-medium">Target URL</span>
-        </label>
-        <input 
-          class="input input-bordered w-full bg-base-200 text-base-content/70"
-          value="<%= @url.target_url %>" 
-          readonly 
-        />
-      </div>
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text font-medium">Shortened Link</span>
-        </label>
-        <div class="flex gap-2">
-          <div class="join flex-1">
-            <input 
-              class="input input-bordered join-item w-full bg-base-200"
-              value="<%= request.base_url %>/<%= @url.short_code %>" 
-              readonly 
-            />
-            <button 
-              type="button" 
-              class="btn btn-primary join-item"
-              onclick="navigator.clipboard.writeText('<%= request.base_url %>/<%= @url.short_code %>')">
-              Copy
-            </button>
+    <div class="card-body">
+      <div class="flex flex-col gap-2">
+        <div class="flex justify-between items-center gap-2">
+          <div class="flex items-center gap-2 overflow-hidden">
+            <h2 class="text-primary text-2xl font-bold truncate"><%= "#{request.host_with_port}/#{@url.short_code}" %></h2>
+            <div>
+              <%= lucide_icon("copy", class: "cursor-pointer duration-200 stroke-primary", onclick: "navigator.clipboard.writeText('#{request.base_url}/#{@url.short_code}')", size:16) %>
+            </div>
           </div>
-          <%= link_to "Visit", "/#{@url.short_code}", 
-              class: "btn btn-neutral", 
-              target: "_blank" %>
+          <%= link_to lucide_icon("external-link", size:16) + " Visit" , "#{request.base_url}/#{@url.short_code}", class: "btn btn-neutral", target: "_blank" %>
+        </div>
+        <div class="flex items-center gap-2">
+          <div>
+            <%= lucide_icon("corner-down-right", class: "stroke-base-content/50", size:16) %>
+          </div>
+          <%= link_to @url.target_url, @url.target_url, class: "text-base-content/50 hover:underline cursor-alias truncate", target: "_blank" %>
+        </div>
+      </div>
+      <div class="divider my-2"></div>
+      <div class="flex flex-col gap-2">
+        <% if @url.title.present? %>
+          <div class="flex items-center gap-2">
+            <div>
+              <%= lucide_icon("file-text", class: "stroke-base-content/50", size:16) %>
+            </div>
+            <span class="text-base-content/50"><%= @url.title %></span>
+          </div>
+        <% end %>
+        <div class="flex items-center gap-2">
+          <div>
+            <%= lucide_icon("calendar", class: "stroke-base-content/50", size:16) %>
+          </div>
+          <span class="text-base-content/50"><%= @url.created_at.strftime("%b %d, %Y") %></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div>
+            <%= lucide_icon("mouse-pointer-click", class: "stroke-base-content/50", size:16) %>
+          </div>
+          <span class="text-base-content/50" id="visit_count"><%= @url.visits.count %> clicks</span>
         </div>
       </div>
     </div>
@@ -44,10 +52,11 @@
       <h2 class="card-title text-2xl font-bold">
         Events
       </h2>
-      <div class="h-64 overflow-auto">
-        <%= turbo_stream_from @url.id %>
+      <div class="overflow-auto">
         <%= render "visits", url: @url %>
-      <div>
+        <div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
