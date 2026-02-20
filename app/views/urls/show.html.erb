@@ -5,46 +5,7 @@
   </div>
   <div class="card bg-base-100 shadow-2xl max-w-3xl w-full">
     <div class="card-body">
-      <div class="flex flex-col gap-2">
-        <div class="flex justify-between items-center gap-2">
-          <div class="flex items-center gap-2 overflow-hidden">
-            <h2 class="text-primary text-2xl font-bold truncate"><%= "#{request.host_with_port}/#{@url.short_code}" %></h2>
-            <div>
-              <%= lucide_icon("copy", class: "cursor-pointer duration-200 stroke-primary", onclick: "navigator.clipboard.writeText('#{request.base_url}/#{@url.short_code}')", size:16) %>
-            </div>
-          </div>
-          <%= link_to lucide_icon("external-link", size:16) + " Visit" , "#{request.base_url}/#{@url.short_code}", class: "btn btn-neutral", target: "_blank" %>
-        </div>
-        <div class="flex items-center gap-2">
-          <div>
-            <%= lucide_icon("corner-down-right", class: "stroke-base-content/50", size:16) %>
-          </div>
-          <%= link_to @url.target_url, @url.target_url, class: "text-base-content/50 hover:underline cursor-alias truncate", target: "_blank" %>
-        </div>
-      </div>
-      <div class="divider my-2"></div>
-      <div class="flex flex-col gap-2">
-        <% if @url.title.present? %>
-          <div class="flex items-center gap-2">
-            <div>
-              <%= lucide_icon("file-text", class: "stroke-base-content/50", size:16) %>
-            </div>
-            <span class="text-base-content/50"><%= @url.title %></span>
-          </div>
-        <% end %>
-        <div class="flex items-center gap-2">
-          <div>
-            <%= lucide_icon("calendar", class: "stroke-base-content/50", size:16) %>
-          </div>
-          <span class="text-base-content/50"><%= @url.created_at.strftime("%b %d, %Y") %></span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div>
-            <%= lucide_icon("mouse-pointer-click", class: "stroke-base-content/50", size:16) %>
-          </div>
-          <span class="text-base-content/50" id="visit_count"><%= @url.visits.count %> clicks</span>
-        </div>
-      </div>
+      <%= render "url_details", url: @url %>
     </div>
   </div>
   <div class="card bg-base-100 shadow-2xl max-w-3xl w-full">
@@ -52,11 +13,7 @@
       <h2 class="card-title text-2xl font-bold">
         Events
       </h2>
-      <div class="overflow-auto">
-        <%= render "visits", url: @url %>
-        <div>
-        </div>
-      </div>
+      <%= render "visits", url: @url %>
     </div>
   </div>
 </div>
