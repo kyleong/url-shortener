@@ -1,0 +1,33 @@
+<%= form_with model: url, data: { controller: "submit" } do |form| %>
+  <% if url.errors.any? %>
+    <div class="alert alert-error mb-4">
+      <div>
+        <h3 class="font-bold"><%= pluralize(url.errors.count, "error") %> prohibited this URL:</h3>
+        <ul>
+          <% url.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+  <div class="form-control w-full mb-6">
+    <%= form.label :target_url, "Target URL", class: "label" %>
+    <%= form.text_field :target_url, 
+        placeholder: "example.com", 
+        class: "input input-bordered w-full placeholder-opacity-50",
+        required: true,
+        data: { submit_target: "input" } %>
+    <label class="label">
+      <span class="label-text-alt text-xs">You can create up to 5 short links.</span>
+    </label>
+  </div>
+  <div class="form-control">
+    <%= form.submit "Create Short Link", 
+        class: "btn btn-primary w-full", 
+        data: { 
+          turbo_submits_with: "Creating...",
+          action: "click->submit#normalize"
+        } %>
+  </div>
+<% end %>
