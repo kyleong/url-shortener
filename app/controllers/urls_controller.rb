@@ -3,7 +3,7 @@ class UrlsController < ApplicationController
   def new
     session[:initialized] ||= true
     @url = Url.new
-    @urls = Url.where(session_id: request.session.id.to_s, is_active: true).order(created_at: :desc)
+    load_urls
   end
 
   def create
@@ -13,6 +13,7 @@ class UrlsController < ApplicationController
       FetchUrlMetadataJob.perform_later(@url.id)
       redirect_to root_path, notice: "Your shortened URL is: #{(@url.short_code)}"
     else
+      load_urls
       render :new, status: :unprocessable_entity
     end
   end
@@ -40,5 +41,9 @@ class UrlsController < ApplicationController
 
   def url_params
     params.require(:url).permit(:target_url)
+  end
+
+  def load_urls
+    @urls = Url.where(session_id: request.session.id.to_s, is_active: true).order(created_at: :desc)
   end
 end
