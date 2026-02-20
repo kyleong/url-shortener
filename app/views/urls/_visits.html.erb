@@ -7,8 +7,11 @@
     </tr>
   </thead>
   <tbody id="visits">
-    <% @visits.each do |visit| %>
-      <%= render "visit", visit: visit %>
+    <% if @visits.any? %>
+      <% @visits.each do |visit| %>
+        <%= render "visit", visit: visit %>
+      <% end %>
+    <% else %>
     <% end %>
   </tbody>
 </table>
