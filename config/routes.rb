@@ -11,6 +11,10 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "urls#new"
-  resources :urls, param: :short_code, only: [ :create, :show ]
+  resources :urls, param: :short_code, only: [ :create, :show ] do
+  member do
+    patch :deactivate
+  end
+end
   get "/:short_code", to: "urls#redirect"
 end

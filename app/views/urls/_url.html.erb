@@ -14,22 +14,46 @@
     </div>
     <div class="flex items-center gap-2">
       <div>
-        <%= lucide_icon("calendar", class: "stroke-base-content/50", size:14) %>
+        <%= lucide_icon("calendar", class: "stroke-base-content/50",size:14) %>
       </div>
       <span class="text-xs text-base-content/50"><%= url.created_at.strftime("%b %d, %Y") %></span>
     </div>
   </div>
-  <div class="gap-2 hidden md:flex">
-    <%= link_to lucide_icon("external-link", size:16) + " Visit" , url.short_code, class: "btn btn-neutral btn-sm", target: "_blank" %>
-    <%= link_to lucide_icon("chart-no-axes-column", size:16) + " View" , url_path(url.short_code), class: "btn btn-primary btn-sm" %>
+  <div class="gap-2 hidden sm:flex">
+    <%= link_to lucide_icon("external-link", size:16) + " Visit" , 
+        url.short_code, 
+        class: "btn btn-neutral btn-sm",
+        target: "_blank" %>
+    <%= link_to lucide_icon("chart-no-axes-column", size:16) + " View" , 
+        url_path(url.short_code), 
+        class: "btn btn-primary btn-sm" %>
+    <%= button_to lucide_icon("trash", size:16) + " Delete", 
+        deactivate_url_path(url),
+        method: :patch,
+        data: { turbo_confirm: "Are you sure?" },
+        class: "btn btn-error btn-sm" %>
   </div>
-  <div class="dropdown dropdown-end md:hidden">
+  <div class="dropdown dropdown-end sm:hidden">
     <div tabindex="0" role="button" class="btn btn-ghost">
       <%= lucide_icon("more-vertical", size:16) %>
     </div>
     <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm">
-      <li><%= link_to lucide_icon("external-link", size:16) + " Visit" , url.short_code, target: "_blank" %></li>
-      <li><%= link_to lucide_icon("chart-no-axes-column", size:16) + " View" , url_path(url.short_code) %></li>
+      <li>
+        <%= link_to lucide_icon("external-link", size:16) + " Visit", 
+            url.short_code,
+            target: "_blank" %>
+      </li>
+      <li>
+        <%= link_to lucide_icon("chart-no-axes-column", size:16) + " View",
+            url_path(url.short_code) %>
+      </li>
+      <li>
+        <%= button_to lucide_icon("trash", size:16) + " Delete",
+            deactivate_url_path(url),
+            method: :patch,
+            data: { turbo_confirm: "Are you sure?" },
+            class: "w-full text-left" %>
+      </li>
     </ul>
   </div>
 </div>

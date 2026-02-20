@@ -1,5 +1,6 @@
 class UrlsController < ApplicationController
-  before_action :set_url, only: %i[ show ]
+  before_action :set_url, only: %i[ show deactivate ]
+
   def new
     session[:initialized] ||= true
     @url = Url.new
@@ -34,6 +35,15 @@ class UrlsController < ApplicationController
     respond_to do |format|
       format.html
       format.turbo_stream
+    end
+  end
+
+  def deactivate
+    if @url.update(is_active: false)
+      redirect_to root_path, notice: "URL #{@url.short_code} deleted!"
+    else
+    Rails.logger.debug @url.errors.full_messages
+      redirect_to root_path, alert: "Update failed"
     end
   end
 
