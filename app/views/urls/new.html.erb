@@ -1,5 +1,5 @@
 <%= render "new_url_dialog" %>
-<div class="bg-base-300 flex flex-col space-y-8 py-12 px-4 items-center">
+<div class="flex flex-col space-y-8 py-12 px-4 items-center">
   <div class="card bg-base-100 shadow-2xl max-w-3xl w-full">
     <div class="card-body">
       <h2 class="card-title text-2xl font-bold mb-6">Create Short Link</h2>
@@ -27,7 +27,7 @@
           </label>
         </div>
         <div class="form-control">
-          <%= form.submit "Create Short Link", class: "btn btn-primary w-full" %>
+          <%= form.submit "Create Short Link", class: "btn btn-primary w-full", data: { turbo_submits_with: "Creating..." }%>
         </div>
       <% end %>
     </div>
