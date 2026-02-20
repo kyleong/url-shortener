@@ -2,7 +2,8 @@ class Url < ApplicationRecord
   has_many :visits, dependent: :destroy
 
   validate :limit_per_session, on: :create
-  validates :target_url, presence: true, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]), message: "must be a valid HTTP or HTTPS URL" }
+  validates :target_url, presence: true
+  validate  :target_url_must_be_valid_uri
   validates :short_code, uniqueness: true
   after_create :generate_short_code, :set_active
 
@@ -11,6 +12,21 @@ class Url < ApplicationRecord
   end
 
   private
+  def target_url_must_be_valid_uri
+    return if target_url.blank?
+
+    unless uri?(target_url)
+      errors.add(:target_url, "is not a valid URL")
+    end
+  end
+
+  def uri?(string)
+    uri = URI.parse(string)
+    %w[ http https ].include?(uri.scheme)
+  rescue URI::BadURIError, URI::InvalidURIError
+    false
+  end
+
   def generate_short_code
     return if short_code.present?
     short_code = ShortCodeGenerator.new(id).call
