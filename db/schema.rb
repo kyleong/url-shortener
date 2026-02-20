@@ -10,13 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_18_132719) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_20_023909) do
   create_table "urls", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.integer "fetch_status_code"
+    t.datetime "fetched_at"
     t.boolean "is_active"
     t.string "session_id"
     t.string "short_code", limit: 15
     t.string "target_url"
+    t.string "title", limit: 500
     t.datetime "updated_at", null: false
   end
 
