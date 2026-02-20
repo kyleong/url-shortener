@@ -1,9 +1,9 @@
-<div class="flex w-full p-4 border items-start rounded-xl border-base-content/50 hover:bg-base-200 gap-6 hover:scale-101 hover:shadow duration-200 transition-all" id="<%= dom_id(url) %>">
+<div class="flex w-full p-4 items-start border border-base-content/15 rounded-xl  hover:bg-base-200" id="<%= dom_id(url) %>">
   <div class="flex flex-col flex-1 w-0 gap-1">
     <div class="flex gap-2 items-center">
-      <%= link_to "#{request.host_with_port}/#{url.short_code}", "#{request.base_url}/#{url.short_code}", class: "hover:underline cursor-alias", target: "_blank" %>
+      <%= link_to "#{request.host_with_port}/#{url.short_code}", url_path(url.short_code), class: "hover:underline truncate" %>
       <div>
-        <%= lucide_icon("copy", class: "cursor-pointer", onclick: "navigator.clipboard.writeText('#{request.base_url}/#{url.short_code}')", size:16) %>
+        <%= lucide_icon("copy", class: "cursor-pointer duration-200", onclick: "navigator.clipboard.writeText('#{request.base_url}/#{url.short_code}')", size:16) %>
       </div>
     </div>
     <div class="flex items-center gap-2">
@@ -21,7 +21,7 @@
   </div>
   <div class="gap-2 hidden md:flex">
     <%= link_to lucide_icon("external-link", size:16) + " Visit" , url.short_code, class: "btn btn-neutral btn-sm", target: "_blank" %>
-    <%= link_to lucide_icon("chart-no-axes-column", size:16) + " Usage" , url_path(url.short_code), class: "btn btn-primary btn-sm" %>
+    <%= link_to lucide_icon("chart-no-axes-column", size:16) + " View" , url_path(url.short_code), class: "btn btn-primary btn-sm" %>
   </div>
   <div class="dropdown dropdown-end md:hidden">
     <div tabindex="0" role="button" class="btn btn-ghost">
@@ -29,7 +29,7 @@
     </div>
     <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm">
       <li><%= link_to lucide_icon("external-link", size:16) + " Visit" , url.short_code, target: "_blank" %></li>
-      <li><%= link_to lucide_icon("chart-no-axes-column", size:16) + " Usage" , url_path(url.short_code) %></li>
+      <li><%= link_to lucide_icon("chart-no-axes-column", size:16) + " View" , url_path(url.short_code) %></li>
     </ul>
   </div>
 </div>
