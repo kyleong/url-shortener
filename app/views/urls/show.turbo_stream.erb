@@ -1,0 +1,16 @@
+<%= turbo_stream.append "visits" do %>
+  <% @visits.each do |visit| %>
+    <%= render "visit", visit: visit %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace "show_more" do %>
+  <%= turbo_frame_tag "show_more" do %>
+    <% if @next_page %>
+      <%= link_to "Show More",
+          url_path(@url, page: @next_page, format: :turbo_stream),
+          data: { turbo_prefetch: false },
+          class: "btn btn-primary w-full mt-4" %>
+    <% end %>
+  <% end %>
+<% end %>
