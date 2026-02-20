@@ -1,35 +1,9 @@
-<%= render "new_url_dialog" %>
+<%= render "url_created_modal" %>
 <div class="flex flex-col space-y-8 py-12 px-4 items-center">
   <div class="card bg-base-100 shadow-2xl max-w-3xl w-full">
     <div class="card-body">
       <h2 class="card-title text-2xl font-bold mb-6">Create Short Link</h2>
-      <%= form_with model: @url do |form| %>
-        <% if @url.errors.any? %>
-          <div class="alert alert-error mb-4">
-            <div>
-              <h3 class="font-bold"><%= pluralize(@url.errors.count, "error") %> prohibited this URL:</h3>
-              <ul>
-                <% @url.errors.full_messages.each do |message| %>
-                  <li><%= message %></li>
-                <% end %>
-              </ul>
-            </div>
-          </div>
-        <% end %>
-        <div class="form-control w-full mb-6">
-          <%= form.label :target_url, "Target URL", class: "label" %>
-          <%= form.url_field :target_url, 
-            placeholder: "https://example.com", 
-            class: "input input-bordered w-full placeholder-opacity-50",
-            required: true %>
-          <label class="label">
-            <span class="label-text-alt text-xs">Include http:// or https://</span>
-          </label>
-        </div>
-        <div class="form-control">
-          <%= form.submit "Create Short Link", class: "btn btn-primary w-full", data: { turbo_submits_with: "Creating..." }%>
-        </div>
-      <% end %>
+      <%= render "url_form", url: @url %>
     </div>
   </div>
   <% if @urls.any? %>
@@ -38,13 +12,7 @@
         <h2 class="card-title text-2xl font-bold">
           Recent Links
         </h2>
-        <div class="flex flex-col gap-4">
-          <% @urls.each do |url| %>
-            <%= render "url", url: url %>
-          <% end %>
-          <div>
-          </div>
-        </div>
+        <%= render "recent_links", urls: @urls %>
       </div>
     </div>
   <% end %>
