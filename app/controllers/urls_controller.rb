@@ -61,7 +61,6 @@ class UrlsController < ApplicationController
   private
 
   def set_url
-    puts "Finding URL with short code: #{params[:short_code]}"
     @url = Url.find_by!(short_code: params[:short_code])
   end
 

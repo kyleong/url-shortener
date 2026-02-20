@@ -27,7 +27,7 @@ class Url < ApplicationRecord
     existing_count = Url.lock.where(session_id: session_id, is_active: true).count
 
     if existing_count >= 5
-      errors.add(:base, "You have reached the maximum number of URLs you can create.")
+      errors.add(:base, "Max number of URLs reached, please delete some and try again.")
     end
   end
 end
