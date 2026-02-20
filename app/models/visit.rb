@@ -12,5 +12,9 @@ class Visit < ApplicationRecord
       target: "visits",
       partial: "urls/visit",
       locals: { visit: self }
+
+    broadcast_update_to url.id,
+      target: "visit_count",
+      html: "#{url.visits.count} clicks"
   end
 end
