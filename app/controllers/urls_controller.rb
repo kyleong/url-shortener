@@ -3,7 +3,7 @@ class UrlsController < ApplicationController
   def new
     session[:initialized] ||= true
     @url = Url.new
-    @urls = Url.where(session_id: request.session.id.to_s).order(created_at: :desc)
+    @urls = Url.where(session_id: request.session.id.to_s, is_active: true).order(created_at: :desc)
   end
 
   def create
