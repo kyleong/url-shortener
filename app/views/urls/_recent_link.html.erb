@@ -1,7 +1,7 @@
-<div class="flex w-full p-4 items-start border border-base-content/15 rounded-xl  hover:bg-base-200" id="<%= dom_id(url) %>">
+<div class="flex w-full p-4 items-start border border-base-content/15 rounded-xl  hover:bg-base-200 gap-2" id="<%= dom_id(url) %>">
   <div class="flex flex-col flex-1 w-0 gap-1">
     <div class="flex gap-2 items-center">
-      <%= link_to "#{request.host_with_port}/#{url.short_code}", url_path(url.short_code), class: "hover:underline truncate" %>
+      <%= link_to "#{request.host_with_port}/#{url.short_code}", url_path(url.short_code), class: "hover:underline break-all" %>
       <div>
         <%= lucide_icon("copy", class: "cursor-pointer duration-200", onclick: "navigator.clipboard.writeText('#{request.base_url}/#{url.short_code}')", size:16) %>
       </div>
@@ -10,7 +10,7 @@
       <div>
         <%= lucide_icon("corner-down-right", class: "stroke-base-content/50", size:14) %>
       </div>
-      <%= link_to url.target_url, url.target_url, class: "text-xs text-base-content/50 hover:underline cursor-alias truncate", target: "_blank" %>
+      <%= link_to url.target_url, url.target_url, class: "text-xs text-base-content/50 hover:underline cursor-alias break-all", target: "_blank" %>
     </div>
     <div class="flex items-center gap-2">
       <div>
@@ -52,7 +52,7 @@
             deactivate_url_path(url),
             method: :patch,
             data: { turbo_confirm: "Are you sure?" },
-            class: "w-full text-left" %>
+            class: "flex flex-nowrap gap-2 items-center" %>
       </li>
     </ul>
   </div>
