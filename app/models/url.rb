@@ -1,6 +1,7 @@
 class Url < ApplicationRecord
   has_many :visits, dependent: :destroy
 
+  validate :limit_per_session, on: :create
   validates :target_url, presence: true, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]), message: "must be a valid HTTP or HTTPS URL" }
   validates :short_code, uniqueness: true
   after_create :generate_short_code, :set_active
@@ -18,5 +19,15 @@ class Url < ApplicationRecord
 
   def set_active
     update_column(:is_active, true)
+  end
+
+  def limit_per_session
+    return unless session_id.present?
+
+    existing_count = Url.lock.where(session_id: session_id, is_active: true).count
+
+    if existing_count >= 5
+      errors.add(:base, "You have reached the maximum number of URLs you can create.")
+    end
   end
 end
