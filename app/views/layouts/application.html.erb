@@ -23,7 +23,8 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-base-300 min-h-screen">
+  <body class="bg-base-300 min-h-screen" data-controller="toast">
+    <div id="toast-container" class="toast toast-end"></div>
     <%= render "layouts/navbar" %>
     <main>
       <%= content_for?(:body) ? yield(:body) : yield %>

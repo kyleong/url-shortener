@@ -12,7 +12,16 @@
         <div class="flex gap-2 items-center">
           <%= link_to "#{request.host_with_port}/#{flash[:short_code]}", "#{request.host_with_port}/#{flash[:short_code]}", class: "text-lg text-primary break-all hover:underline", target: "_blank" %>
           <div>
-            <%= lucide_icon("copy", class: "cursor-pointer", onclick: "navigator.clipboard.writeText('#{request.base_url}/#{flash[:short_code]}')", size:20) %>
+            <%= lucide_icon(
+              "copy",
+              class: "cursor-pointer",
+              onclick: "navigator.clipboard.writeText('#{request.base_url}/#{flash[:short_code]}')",
+              size: 20,
+              data: {
+                action: "click->toast#show",
+                toast_message_param: "ℹ️ Copied #{request.base_url}/#{flash[:short_code]}",
+              }
+            ) %>
           </div>
         </div>
       </div>
