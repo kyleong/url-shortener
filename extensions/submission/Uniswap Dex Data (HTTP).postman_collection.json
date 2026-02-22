@@ -1,0 +1,207 @@
+{
+  "info": {
+    "_postman_id": "50125a1a-8bd4-4daa-bc6c-3ce2235ea186",
+    "name": "Uniswap Dex Data (HTTP)",
+    "description": "GraphQL queries against the Uniswap V3 subgraph via GraphQL with HTTP request.\n\n### Setup\n\nTo retrieve your own API key, you'll need to connect your crypto wallet to the [https://thegraph.com/studio/apikeys/](https://thegraph.com/studio/apikeys/).\n\nAdd the API key into the collection variable named `apiKey`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "43851132",
+    "_collection_link": "https://go.postman.co/collection/43851132-50125a1a-8bd4-4daa-bc6c-3ce2235ea186?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Introspection Schema",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "query IntrospectionQuery {\n  __schema {\n    queryType { name }\n    mutationType { name }\n    subscriptionType { name }\n    types {\n      ...FullType\n    }\n    directives {\n      name\n      description\n      locations\n      args {\n        ...InputValue\n      }\n    }\n  }\n}\n\nfragment FullType on __Type {\n  kind\n  name\n  description\n  fields(includeDeprecated: true) {\n    name\n    description\n    args {\n      ...InputValue\n    }\n    type {\n      ...TypeRef\n    }\n    isDeprecated\n    deprecationReason\n  }\n  inputFields {\n    ...InputValue\n  }\n  interfaces {\n    ...TypeRef\n  }\n  enumValues(includeDeprecated: true) {\n    name\n    description\n    isDeprecated\n    deprecationReason\n  }\n  possibleTypes {\n    ...TypeRef\n  }\n}\n\nfragment InputValue on __InputValue {\n  name\n  description\n  type { ...TypeRef }\n  defaultValue\n}\n\nfragment TypeRef on __Type {\n  kind\n  name\n  ofType {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "variables": ""
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/{{apiKey}}/subgraphs/id/{{subGraphId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "{{apiKey}}",
+            "subgraphs",
+            "id",
+            "{{subGraphId}}"
+          ]
+        },
+        "description": "Fetches the full GraphQL schema via introspection."
+      },
+      "response": []
+    },
+    {
+      "name": "List 100 pools",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "query Pools {\n    pools(first: 100) {\n        id\n        token0 {\n            id\n            symbol\n        }\n        token1 {\n            id\n            symbol\n        }\n    }\n}\n",
+            "variables": ""
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/{{apiKey}}/subgraphs/id/{{subGraphId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "{{apiKey}}",
+            "subgraphs",
+            "id",
+            "{{subGraphId}}"
+          ]
+        },
+        "description": "List 100 pools with the following attributes.\n\n```\nid\ntoken0 id\ntoken0 symbol\ntoken1 id\ntoken1 symbol\n\n ```"
+      },
+      "response": []
+    },
+    {
+      "name": "List top 100 liquidity pools since past week",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const sevenDaysAgo = Math.floor((Date.now() - 7 * 24 * 60 * 60 * 1000) / 1000);",
+              "pm.variables.set(\"since\", sevenDaysAgo);",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "query HighestLiquidityPoolsSincePastWeek($since: BigInt!) {\n    pools(\n        first: 100\n        orderBy: liquidity\n        orderDirection: desc\n        where: { createdAtTimestamp_gte: $since }\n    ) {\n        id\n        token0 {\n            id\n            symbol\n        }\n        token1 {\n            id\n            symbol\n        }\n    }\n}\n",
+            "variables": "{\n    \"since\": {{since}}\n}"
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/{{apiKey}}/subgraphs/id/{{subGraphId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "{{apiKey}}",
+            "subgraphs",
+            "id",
+            "{{subGraphId}}"
+          ]
+        },
+        "description": "Dynamically computes a Unix timestamp for 7 days ago via a pre-request script, then lists pools ordered by liquidity descending with the following attributes.\n\n```\nid\ntoken0 id\ntoken0 symbol\ntoken1 id\ntoken1 symbol\n\n ```"
+      },
+      "response": []
+    },
+    {
+      "name": "Get pool by ID",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.variables.set(\"id\", \"0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8\")"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "query Pool($id: ID!) {\n    pools(\n        where: {\n            id: $id\n        }\n    ) {\n        id\n        token0 {\n            id\n            symbol\n            derivedETH\n        }\n        token1 {\n            id\n            symbol\n            derivedETH\n        }\n        liquidity\n        token0Price\n        token1Price\n        volumeToken0\n        volumeToken1\n        volumeUSD\n        totalValueLockedUSD\n    }\n}\n",
+            "variables": "{\n    \"id\": \"{{id}}\"\n}"
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/{{apiKey}}/subgraphs/id/{{subGraphId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "{{apiKey}}",
+            "subgraphs",
+            "id",
+            "{{subGraphId}}"
+          ]
+        },
+        "description": "Get detailed data for a single pool by contract address with the following attributes.\n\n`id` is set locally via pre-request script (before script).\n\n```\nid\ntoken0 id\ntoken0 symbol\ntoken0 derivedETH\ntoken1 id\ntoken1 symbol\ntoken1 derivedETH\nliquidity\ntoken0Price\ntoken1Price\nvolumeToken0\nvolumeToken1\nvolumeUSD\ntotalValueLockedUSD\n\n ```"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "apiKey",
+      "value": "",
+      "description": "Your Graph API key from https://thegraph.com/studio"
+    }
+  ]
+}
