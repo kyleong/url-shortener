@@ -1,31 +1,29 @@
 class UrlsController < ApplicationController
-  before_action :set_url, only: %i[ show deactivate ]
+  before_action :set_url, only: %i[ show deactivate redirect ]
+  before_action :load_urls, only: %i[new create]
+
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
   def new
     session[:initialized] ||= true
     @url = Url.new
-    load_urls
   end
 
   def create
     session_id = request.session.id.to_s
-
     @url = CreateUrlService.new(url_params, session_id: session_id).call!
-
-    redirect_to root_path, short_code: @url.short_code
+    flash[:short_code] = @url.short_code
+    redirect_to root_path
   rescue ActiveRecord::RecordInvalid => e
     Rails.logger.error("Validation failed: #{e.record.errors.full_messages.join(", ")}")
-
     render_new_with_errors(e.record)
   rescue => e
     Rails.logger.error("Unexpected error in UrlsController#create: #{e.message}")
-
     render_new_with_errors(Url.new, "An unexpected error occurred. Please try again.")
   end
 
   def show
     @visits, @next_page = ShowUrlService.new(url: @url, page: params[:page]).call
-
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -34,10 +32,10 @@ class UrlsController < ApplicationController
 
   def deactivate
     if @url.update(is_active: false)
-      redirect_to root_path, notice: "URL #{@url.short_code} deleted!"
+      redirect_to root_path, notice: "URL with #{@url.short_code} deleted!"
     else
-    Rails.logger.debug @url.errors.full_messages
-      redirect_to root_path, alert: "Update failed"
+      Rails.logger.error @url.errors.full_messages
+      redirect_to root_path, alert: "Failed to delete URL with #{@url.short_code}. Please try again."
     end
   end
 
@@ -53,7 +51,6 @@ class UrlsController < ApplicationController
   def render_new_with_errors(url, message = nil)
     @url = url
     @url.errors.add(:base, message) if message
-    load_urls
     render :new, status: :unprocessable_entity
   end
 
@@ -66,6 +63,10 @@ class UrlsController < ApplicationController
   end
 
   def load_urls
-    @urls = Url.where(session_id: request.session.id.to_s, is_active: true).order(created_at: :desc)
+    @urls = SessionUrlsQuery.new(request.session.id.to_s).call
+  end
+
+  def render_not_found_response(exception)
+    render json: { error: "Url not found" }, status: :not_found
   end
 end
