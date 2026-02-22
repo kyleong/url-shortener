@@ -40,8 +40,5 @@ class FetchUrlMetadataJob < ApplicationJob
       status_code: status_code,
       title: title
     }
-  rescue => e
-    Rails.logger.warn("Could not fetch metadata for #{url_string}: #{e.message}")
-    nil
   end
 end
