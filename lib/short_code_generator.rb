@@ -5,16 +5,11 @@ class ShortCodeGenerator
 
   PREFIX_LENGTH = 7
 
-  def initialize(id, prefix_length: PREFIX_LENGTH)
-    @id = id
-    @prefix_length = prefix_length
-  end
+  def self.encode(id, prefix_length: PREFIX_LENGTH)
+    raise ArgumentError, "ID must be a positive integer" if id.nil? || id < 0
 
-  def call
-    raise ArgumentError, "ID must be a positive integer" if @id.nil? || @id < 0
-
-    prefix = generate_random_prefix
-    encoded_id = encode_base62(@id)
+    prefix = generate_random_prefix(prefix_length)
+    encoded_id = encode_base62(id)
     "#{prefix}#{encoded_id}"
   end
 
@@ -27,13 +22,13 @@ class ShortCodeGenerator
     nil
   end
 
-  private
+  private_class_method
 
-  def generate_random_prefix
-    @prefix_length.times.map { BASE62_CHARS.sample }.join
+  def self.generate_random_prefix(length)
+    length.times.map { BASE62_CHARS.sample }.join
   end
 
-  def encode_base62(num)
+  def self.encode_base62(num)
     return BASE62_CHARS[0] if num.zero?
 
     result = []
