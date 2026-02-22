@@ -85,8 +85,6 @@ curl --location "https://gateway.thegraph.com/api/$API_KEY/subgraphs/id/5zvR82Qo
       orderDirection: desc,
       where: { createdAtTimestamp_gte: \$since }
     ) {
-      createdAtTimestamp
-      liquidity
       id
       token0 { id symbol }
       token1 { id symbol }
