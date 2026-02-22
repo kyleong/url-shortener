@@ -65,6 +65,7 @@ group :test do
   gem "selenium-webdriver"
   gem "factory_bot_rails"
   gem "faker"
+  gem "simplecov", require: false
   gem "rspec-rails", "~> 8.0.0"
 end
 
