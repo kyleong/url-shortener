@@ -72,7 +72,7 @@ RSpec.describe UrlsController, type: :controller do
 
       it "returns unprocessable entity status" do
         post :create, params: { url: { target_url: target_url } }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
 
       it "assigns the invalid record to @url" do
@@ -93,7 +93,7 @@ RSpec.describe UrlsController, type: :controller do
 
       it "returns unprocessable entity status" do
         post :create, params: { url: { target_url: target_url } }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
 
       it "adds a base error to @url" do

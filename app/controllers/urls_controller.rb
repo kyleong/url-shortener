@@ -51,7 +51,7 @@ class UrlsController < ApplicationController
   def render_new_with_errors(url, message = nil)
     @url = url
     @url.errors.add(:base, message) if message
-    render :new, status: :unprocessable_entity
+    render :new, status: :unprocessable_content
   end
 
   def set_url
