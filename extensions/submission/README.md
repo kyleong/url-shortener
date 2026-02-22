@@ -131,7 +131,7 @@ API_KEY="your_api_key_here"
 curl --location "https://gateway.thegraph.com/api/$API_KEY/subgraphs/id/5zvR82QoaXYFyDEKLZ9t6v9adgnptxYpKpSbxtgVENFV" \
 --header "Content-Type: application/json" \
 --data @- <<EOF
-{\
+{
   "query": "query Pool(\$id: ID!) {
     pools(
       where: {
