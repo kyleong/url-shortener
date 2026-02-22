@@ -5,8 +5,7 @@ class CreateUrlService < ApplicationService
   end
 
   def call!
-    url = Url.new(@params.merge(session_id: @session_id))
-    url.save!
+    url = Url.create!(@params.merge(session_id: @session_id))
     FetchUrlMetadataJob.perform_later(url.id)
     url
   end
