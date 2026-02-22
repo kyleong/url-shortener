@@ -42,9 +42,9 @@ class UrlsController < ApplicationController
   end
 
   def redirect
-    CreateVisitService.new(@url, request).call
+    CreateVisitService.new(@url, request).call!
   rescue => e
-    Rails.logger.error("Error creating visit for URL #{@url.short_code}: #{e.message}")
+    Rails.logger.warn("Error creating visit for URL #{@url.short_code}: #{e.message}")
   ensure
     redirect_to @url.target_url, allow_other_host: true
   end

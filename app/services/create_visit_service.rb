@@ -4,7 +4,7 @@ class CreateVisitService
     @request = request
   end
 
-  def call
+  def call!
     ip = @request.remote_ip
     visit = Visit.create!(
       url: @url,

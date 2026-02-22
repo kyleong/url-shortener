@@ -15,10 +15,10 @@ RSpec.describe CreateVisitService do
     allow(FetchGeolocationJob).to receive(:perform_later)
   end
 
-  describe "#call" do
+  describe "#call!" do
     it "successfully creates a new Visit" do
       expect {
-        described_class.new(url, request).call
+        described_class.new(url, request).call!
       }.to change(Visit, :count).by(1)
       visit = Visit.last
 
@@ -38,7 +38,7 @@ RSpec.describe CreateVisitService do
 
       it "raises an error" do
         expect {
-          described_class.new(url, request).call
+          described_class.new(url, request).call!
         }.to raise_error(error)
         expect(FetchGeolocationJob).not_to have_received(:perform_later)
         expect(Visit.count).to eq(0)
