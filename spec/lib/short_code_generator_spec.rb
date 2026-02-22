@@ -1,4 +1,4 @@
-require_relative "../../lib/short_code_generator"
+require "rails_helper"
 
 RSpec.describe ShortCodeGenerator do
   describe ".encode" do
