@@ -24,17 +24,7 @@ class UrlsController < ApplicationController
   end
 
   def show
-    @page = params[:page].to_i
-    @page = 1 if @page <= 0
-
-    per_page = 5
-    offset = (@page - 1) * per_page
-
-    @visits = @url.visits.order(created_at: :desc)
-                .limit(per_page)
-                .offset(offset)
-
-    @next_page = @page + 1 if @url.visits.count > @page * per_page
+    @visits, @next_page = ShowUrlService.new(url: @url, page: params[:page]).call
 
     respond_to do |format|
       format.html
