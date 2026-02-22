@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe UrlsController, type: :controller do
   let(:short_code) { "abc123" }
   let(:target_url) { "https://example.com" }
-  let(:url) { instance_double(Url, short_code: short_code, target_url: target_url, is_active: true) }
+  let(:url) { create(:url, short_code: short_code, target_url: target_url) }
 
   describe "GET #new" do
     it "returns a successful response" do

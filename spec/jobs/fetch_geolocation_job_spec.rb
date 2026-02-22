@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe FetchGeolocationJob do
   describe "#perform" do
-    let(:visit) { instance_double(Visit, id: 1, ip_address: "1.1.1.1") }
+    let(:visit) { create(:visit) }
 
     before do
       allow(Visit).to receive(:find).with(visit.id).and_return(visit)

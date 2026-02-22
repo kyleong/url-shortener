@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe FetchUrlMetadataJob, type: :job do
   describe "#perform" do
-    let(:url) { Url.create!(target_url: "https://example.com") }
+    let(:url) { create(:url) }
 
     it "updates the url with fetched metadata" do
       allow_any_instance_of(FetchUrlMetadataJob).to receive(:fetch_url_metadata)
@@ -17,17 +17,20 @@ RSpec.describe FetchUrlMetadataJob, type: :job do
       expect(url.fetched_at).to be_present
     end
 
-    it "does not update when metadata is nil" do
-      allow_any_instance_of(FetchUrlMetadataJob).to receive(:fetch_url_metadata)
-        .with(url.target_url)
-        .and_return(nil)
+    context "when fetch_url_metadata returns nil" do
+      let (:url) { create(:url, :unfetched) }
+      it "does not update when metadata is nil" do
+        allow_any_instance_of(FetchUrlMetadataJob).to receive(:fetch_url_metadata)
+          .with(url.target_url)
+          .and_return(nil)
 
-      described_class.perform_now(url.id)
+        described_class.perform_now(url.id)
 
-      url.reload
-      expect(url.fetch_status_code).to be_nil
-      expect(url.title).to be_nil
-      expect(url.fetched_at).to be_nil
+        url.reload
+        expect(url.fetch_status_code).to be_nil
+        expect(url.title).to be_nil
+        expect(url.fetched_at).to be_nil
+      end
     end
   end
 

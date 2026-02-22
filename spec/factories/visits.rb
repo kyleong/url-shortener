@@ -1,4 +1,3 @@
-# spec/factories/visits.rb
 FactoryBot.define do
   factory :visit do
     association :url

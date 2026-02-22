@@ -27,7 +27,7 @@ RSpec.describe ShortCodeGenerator do
 
     it "handles zero ID" do
       short_code = ShortCodeGenerator.encode(0, prefix_length: 7)
-      expect(short_code.length).to eq(8) # 7 prefix + 1 for '0'
+      expect(short_code.length).to eq(8)
     end
 
     it "handles large IDs" do

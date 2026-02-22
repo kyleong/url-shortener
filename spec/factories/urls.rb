@@ -1,4 +1,3 @@
-# spec/factories/urls.rb
 FactoryBot.define do
   factory :url do
     sequence(:target_url) { |n| "https://example#{n}.com/some/path" }
