@@ -387,6 +387,17 @@
                 }
             },
             {
+                "id": "0x4759144cdaaf63cb4219ed6c8ec6083a5c05d1ae",
+                "token0": {
+                    "id": "0x364515f2f8ac2fecdc44aabc124d69893f7aa9c0",
+                    "symbol": "HEX"
+                },
+                "token1": {
+                    "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                    "symbol": "WETH"
+                }
+            },
+            {
                 "id": "0x5509b28078dd435d7e1750ca429b34e401ec493f",
                 "token0": {
                     "id": "0x806f54d743ee9201813257ed08c137d9df145f29",
@@ -1084,17 +1095,6 @@
                 "token0": {
                     "id": "0x28394e249d81ac62f853c2a0f201696877db8af0",
                     "symbol": "REKT"
-                },
-                "token1": {
-                    "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-                    "symbol": "WETH"
-                }
-            },
-            {
-                "id": "0xf6dca54f3840c907f5a1cc4abd8f1d48de13f40a",
-                "token0": {
-                    "id": "0x500424f6573a3196ba7989b86dc498d280fddb09",
-                    "symbol": "HNT"
                 },
                 "token1": {
                     "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",

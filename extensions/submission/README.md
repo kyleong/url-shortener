@@ -36,24 +36,22 @@ Answer:
 API_KEY="your_api_key_here"
 
 curl --location "https://gateway.thegraph.com/api/$API_KEY/subgraphs/id/5zvR82QoaXYFyDEKLZ9t6v9adgnptxYpKpSbxtgVENFV" \
---header 'Content-Type: application/json' \
+--header "Content-Type: application/json" \
 --data @- <<EOF
 {
-  "query": "
-query Pools {
-  pools(first: 100) {
+  "query": "query Pools {
+    pools(first: 100) {
       id
       token0 {
-          id
-          symbol
+        id
+        symbol
       }
       token1 {
-          id
-          symbol
+        id
+        symbol
       }
-  }
-}
-",
+    }
+}",
   "variables": {}
 }
 EOF
@@ -75,8 +73,8 @@ Answer:
 API_KEY="your_api_key_here"
 
 curl --location "https://gateway.thegraph.com/api/$API_KEY/subgraphs/id/5zvR82QoaXYFyDEKLZ9t6v9adgnptxYpKpSbxtgVENFV" \
-  --header "Content-Type: application/json" \
-  --data @- <<EOF
+--header "Content-Type: application/json" \
+--data @- <<EOF
 {
   "query": "query HighestLiquidityPoolsSincePastWeek(\$since: BigInt!) {
     pools(
@@ -86,8 +84,14 @@ curl --location "https://gateway.thegraph.com/api/$API_KEY/subgraphs/id/5zvR82Qo
       where: { createdAtTimestamp_gte: \$since }
     ) {
       id
-      token0 { id symbol }
-      token1 { id symbol }
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
+      }
     }
   }",
   "variables": {
@@ -125,37 +129,35 @@ Answer:
 API_KEY="your_api_key_here"
 
 curl --location "https://gateway.thegraph.com/api/$API_KEY/subgraphs/id/5zvR82QoaXYFyDEKLZ9t6v9adgnptxYpKpSbxtgVENFV" \
---header 'Content-Type: application/json' \
+--header "Content-Type: application/json" \
 --data @- <<EOF
-{
-  "query": "
-query Pool($id: ID!) {
+{\
+  "query": "query Pool(\$id: ID!) {
     pools(
-        where: {
-            id: $id
-        }
+      where: {
+        id: \$id
+      }
     ) {
+      id
+      token0 {
         id
-        token0 {
-            id
-            symbol
-            derivedETH
-        }
-        token1 {
-            id
-            symbol
-            derivedETH
-        }
-        liquidity
-        token0Price
-        token1Price
-        volumeToken0
-        volumeToken1
-        volumeUSD
-        totalValueLockedUSD
+        symbol
+        derivedETH
+      }
+      token1 {
+        id
+        symbol
+        derivedETH
+      }
+      liquidity
+      token0Price
+      token1Price
+      volumeToken0
+      volumeToken1
+      volumeUSD
+      totalValueLockedUSD
     }
-}
-",
+  }",
   "variables": {
     "id": "0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8"
   }
