@@ -42,14 +42,11 @@ class UrlsController < ApplicationController
   end
 
   def redirect
-    @url = Url.find_by(short_code: params[:short_code])
-    LogVisitService.new(@url, request).call!
-
-    if @url.nil? || !@url.is_active
-      render plain: "URL not found", status: :not_found
-    else
-      redirect_to @url.target_url, allow_other_host: true
-    end
+    CreateVisitService.new(@url, request).call
+  rescue => e
+    Rails.logger.error("Error creating visit for URL #{@url.short_code}: #{e.message}")
+  ensure
+    redirect_to @url.target_url, allow_other_host: true
   end
 
   private
