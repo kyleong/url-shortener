@@ -8,15 +8,19 @@ class UrlsController < ApplicationController
   end
 
   def create
-    @url = Url.new(url_params.merge(session_id: request.session.id))
-    if @url.save
-      flash[:short_code] = @url.short_code
-      FetchUrlMetadataJob.perform_later(@url.id)
-      redirect_to root_path, notice: "Your shortened URL is: #{(@url.short_code)}"
-    else
-      load_urls
-      render :new, status: :unprocessable_entity
-    end
+    session_id = request.session.id.to_s
+
+    @url = CreateUrlService.new(url_params, session_id: session_id).call!
+
+    redirect_to root_path, short_code: @url.short_code
+  rescue ActiveRecord::RecordInvalid => e
+    Rails.logger.error("Validation failed: #{e.record.errors.full_messages.join(", ")}")
+
+    render_new_with_errors(e.record)
+  rescue => e
+    Rails.logger.error("Unexpected error in UrlsController#create: #{e.message}")
+
+    render_new_with_errors(Url.new, "An unexpected error occurred. Please try again.")
   end
 
   def show
@@ -59,6 +63,12 @@ class UrlsController < ApplicationController
   end
 
   private
+  def render_new_with_errors(url, message = nil)
+    @url = url
+    @url.errors.add(:base, message) if message
+    load_urls
+    render :new, status: :unprocessable_entity
+  end
 
   def set_url
     @url = Url.find_by!(short_code: params[:short_code])
