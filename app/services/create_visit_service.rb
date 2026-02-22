@@ -1,12 +1,11 @@
-class LogVisitService
+class CreateVisitService
   def initialize(url, request)
     @url = url
     @request = request
   end
 
-  def call!
+  def call
     ip = @request.remote_ip
-
     visit = Visit.create!(
       url: @url,
       ip_address: ip,
@@ -15,7 +14,5 @@ class LogVisitService
       visited_at: Time.current
     )
     FetchGeolocationJob.perform_later(visit.id)
-  rescue StandardError => e
-    Rails.logger.warn "Failed to log visit: #{e.message}"
   end
 end
