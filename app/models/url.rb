@@ -40,7 +40,7 @@ class Url < ApplicationRecord
   def limit_per_session
     return unless session_id.present?
 
-    existing_count = Url.lock.where(session_id: session_id, is_active: true).count
+    existing_count = Url.where(session_id: session_id, is_active: true).count
 
     if existing_count >= 5
       errors.add(:base, "Max number of URLs reached, please delete some and try again.")
