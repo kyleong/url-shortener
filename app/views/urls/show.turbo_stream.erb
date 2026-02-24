@@ -3,7 +3,6 @@
     <%= render "visit", visit: visit %>
   <% end %>
 <% end %>
-
 <%= turbo_stream.replace "show_more" do %>
   <%= turbo_frame_tag "show_more" do %>
     <% if @next_page %>

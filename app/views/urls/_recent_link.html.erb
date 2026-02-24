@@ -1,23 +1,14 @@
 <div class="flex w-full p-4 items-start border border-base-content/15 rounded-xl  hover:bg-base-200 gap-2" id="<%= dom_id(url) %>">
   <div class="flex flex-col flex-1 w-0 gap-1">
     <div class="flex gap-2 items-center">
-      <%= link_to "#{request.host_with_port}/#{url.short_code}", url_path(url.short_code), class: "hover:underline break-all" %>
+      <%= link_to short_url(url), short_url(url, with_protocol: true), class: "hover:underline break-all", target: "_blank" %>
       <div>
-        <%= lucide_icon(
-          "copy", 
-          class: "cursor-pointer duration-200", 
-          onclick: "navigator.clipboard.writeText('#{request.base_url}/#{url.short_code}')",
-          size: 16, 
-          data: { 
-            action: "click->toast#show", 
-            toast_message_param: "ℹ️ Copied #{request.base_url}/#{url.short_code}", 
-          }
-        ) %>
+        <%= lucide_icon("copy", class: "cursor-pointer duration-200", onclick: "navigator.clipboard.writeText('#{short_url(url)}')",size: 16, data:  { action: "click->toast#show",   toast_message_param: "ℹ️ Copied #{short_url(url)}", }  ) %>
       </div>
     </div>
     <div class="flex items-center gap-2">
       <div>
-        <%= lucide_icon("corner-down-right", class: "stroke-base-content/50", size:14) %>
+        <%= lucide_icon(  "corner-down-right",   class: "stroke-base-content/50",   size:14) %>
       </div>
       <%= link_to url.target_url, url.target_url, class: "text-xs text-base-content/50 hover:underline cursor-alias break-all", target: "_blank" %>
     </div>
@@ -29,18 +20,9 @@
     </div>
   </div>
   <div class="gap-2 hidden sm:flex">
-    <%= link_to lucide_icon("external-link", size:16) + " Visit" , 
-        url.short_code, 
-        class: "btn btn-neutral btn-sm",
-        target: "_blank" %>
-    <%= link_to lucide_icon("chart-no-axes-column", size:16) + " View" , 
-        url_path(url.short_code), 
-        class: "btn btn-primary btn-sm" %>
-    <%= button_to lucide_icon("trash", size:16) + " Delete", 
-        deactivate_url_path(url),
-        method: :patch,
-        data: { turbo_confirm: "Are you sure?" },
-        class: "btn btn-error btn-sm" %>
+    <%= link_to lucide_icon("external-link", size:16) + " Visit URL" , url.short_code, class: "btn btn-neutral btn-sm", target: "_blank" %>
+    <%= link_to lucide_icon("chart-line", size:16) + " Stats" , url_path(url), class: "btn btn-primary btn-sm" %>
+    <%= button_to lucide_icon("trash", size:16) + " Delete", deactivate_url_path(url), method: :patch, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-error btn-sm" %>
   </div>
   <div class="dropdown dropdown-end sm:hidden">
     <div tabindex="0" role="button" class="btn btn-ghost">
@@ -48,20 +30,13 @@
     </div>
     <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm">
       <li>
-        <%= link_to lucide_icon("external-link", size:16) + " Visit", 
-            url.short_code,
-            target: "_blank" %>
+        <%= link_to lucide_icon("external-link", size:16) + " Visit URL",   url.short_code,  target: "_blank", class: "text-nowrap" %>
       </li>
       <li>
-        <%= link_to lucide_icon("chart-no-axes-column", size:16) + " View",
-            url_path(url.short_code) %>
+        <%= link_to lucide_icon("chart-line", size:16) + " Stats",  url_path(url), class: "text-nowrap" %>
       </li>
       <li>
-        <%= button_to lucide_icon("trash", size:16) + " Delete",
-            deactivate_url_path(url),
-            method: :patch,
-            data: { turbo_confirm: "Are you sure?" },
-            class: "flex flex-nowrap gap-2 items-center" %>
+        <%= button_to lucide_icon("trash", size:16) + " Delete",  deactivate_url_path(url),  method: :patch,  data: { turbo_confirm: "Are you sure?" },  class: "flex flex-nowrap gap-2 items-center" %>
       </li>
     </ul>
   </div>

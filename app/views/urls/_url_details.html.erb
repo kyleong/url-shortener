@@ -1,21 +1,12 @@
 <div class="flex flex-col gap-2">
   <div class="flex justify-between items-center gap-2">
     <div class="flex items-center gap-2 overflow-hidden">
-      <h2 class="text-primary text-2xl font-bold break-all"><%= "#{request.host_with_port}/#{url.short_code}" %></h2>
+      <h2 class="text-primary text-2xl font-bold break-all"><%= short_url(url) %></h2>
       <div>
-        <%= lucide_icon(
-          "copy",
-          class: "cursor-pointer duration-200 stroke-primary",
-          onclick: "navigator.clipboard.writeText('#{request.base_url}/#{url.short_code}')", 
-          size:16,
-          data: {
-            action: "click->toast#show", 
-            toast_message_param: "ℹ️ Copied #{request.base_url}/#{url.short_code}",
-          }
-        ) %>
+        <%= lucide_icon("copy", class: "cursor-pointer duration-200 stroke-primary", onclick: "navigator.clipboard.writeText('#{short_url(url)}')",  size:16, data: { action: "click->toast#show", toast_message_param: "ℹ️ Copied #{short_url(url)}",}) %>
       </div>
     </div>
-    <%= link_to lucide_icon("external-link", size:16) + " Visit" , "#{request.base_url}/#{url.short_code}", class: "btn btn-neutral", target: "_blank" %>
+    <%= link_to lucide_icon("external-link", size:16) + " Visit" , short_url(url, with_protocol: true), class: "btn btn-neutral", target: "_blank" %>
   </div>
   <div class="flex items-center gap-2">
     <div>
