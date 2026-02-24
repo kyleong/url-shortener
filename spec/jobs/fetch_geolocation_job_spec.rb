@@ -59,7 +59,7 @@ RSpec.describe FetchGeolocationJob do
 
     context "when an error occurs during lookup" do
       before do
-        allow(Geocoder).to receive(:search).with(visit.ip_address).and_raise(StandardError, "boom")
+        allow(Geocoder).to receive(:search).with(visit.ip_address).and_raise(StandardError, "error")
         allow(Rails.logger).to receive(:warn)
       end
 
@@ -67,7 +67,7 @@ RSpec.describe FetchGeolocationJob do
         expect { described_class.new.perform(visit.id) }.not_to raise_error
 
         expect(Rails.logger).to have_received(:warn).with(
-          "Failed to fetch geolocation for IP #{visit.ip_address}: boom"
+          "Failed to fetch geolocation for IP #{visit.ip_address}: error"
         )
       end
     end
