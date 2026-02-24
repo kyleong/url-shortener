@@ -1,7 +1,7 @@
 class ShowUrlService < ApplicationService
   PER_PAGE = 5
 
-  def initialize(url:, page:)
+  def initialize(url, page)
     @url = url
     @page = page.to_i <= 0 ? 1 : page.to_i
   end
