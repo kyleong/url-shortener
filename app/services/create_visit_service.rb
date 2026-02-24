@@ -1,4 +1,4 @@
-class CreateVisitService
+class CreateVisitService < ApplicationService
   def initialize(url, request)
     @url = url
     @request = request
