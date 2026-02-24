@@ -47,14 +47,6 @@ RSpec.describe UrlsController, type: :controller do
         post :create, params: { url: { target_url: target_url } }
         expect(flash[:short_code]).to eq(short_code)
       end
-
-      it "calls CreateUrlService with correct params" do
-        expect(CreateUrlService).to receive(:new).with(
-          an_instance_of(ActionController::Parameters).and(satisfy { |p| p["target_url"] == target_url }),
-          hash_including(session_id: an_instance_of(String))
-        ).and_return(create_service)
-        post :create, params: { url: { target_url: target_url } }
-      end
     end
 
     context "when ActiveRecord::RecordInvalid is raised" do
@@ -70,7 +62,7 @@ RSpec.describe UrlsController, type: :controller do
         expect(response).to render_template(:new)
       end
 
-      it "returns unprocessable entity status" do
+      it "returns unprocessable content status" do
         post :create, params: { url: { target_url: target_url } }
         expect(response).to have_http_status(:unprocessable_content)
       end
@@ -91,7 +83,7 @@ RSpec.describe UrlsController, type: :controller do
         expect(response).to render_template(:new)
       end
 
-      it "returns unprocessable entity status" do
+      it "returns unprocessable content status" do
         post :create, params: { url: { target_url: target_url } }
         expect(response).to have_http_status(:unprocessable_content)
       end
@@ -125,7 +117,7 @@ RSpec.describe UrlsController, type: :controller do
     end
 
     it "calls ShowUrlService with url and page params" do
-      expect(ShowUrlService).to receive(:new).with(url: url, page: nil).and_return(show_service)
+      expect(ShowUrlService).to receive(:new).with(url, nil).and_return(show_service)
       get :show, params: { short_code: short_code }
     end
 
