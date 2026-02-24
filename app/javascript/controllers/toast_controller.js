@@ -1,8 +1,16 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
+  static values = { message: String }
+
+  connect() {
+    if (this.hasMessageValue) {
+      this.show() 
+    }
+  }
+
   show(event) {
-    const message = event?.params?.message || "";
+    const message = event?.params?.message || this.messageValue || "";
 
     const toastContainer = document.getElementById("toast-container");
 
