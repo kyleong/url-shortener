@@ -1,7 +1,11 @@
 class Url < ApplicationRecord
+  attr_accessor :current_host
   has_many :visits, dependent: :destroy
 
-  validate :limit_per_session, on: :create
+  with_options on: :create do
+    validate :limit_per_session
+    validate :target_url_cannot_be_self
+  end
   validates :target_url, presence: true
   validate  :target_url_must_be_valid_uri
   validates :short_code, uniqueness: true
@@ -35,6 +39,20 @@ class Url < ApplicationRecord
 
   def set_active
     update_column(:is_active, true)
+  end
+
+  def target_url_cannot_be_self
+    return if target_url.blank?
+
+    uri = URI.parse(target_url) rescue nil
+    return if uri.nil?
+
+    normalized_target = uri.host.to_s.sub(/^www\./, "")
+    normalized_app    = current_host.to_s.sub(/^www\./, "")
+
+    if normalized_target == normalized_app
+      errors.add(:target_url, "cannot redirect to this application")
+    end
   end
 
   def limit_per_session
