@@ -8,8 +8,8 @@ RSpec.describe CreateUrlService do
     allow(FetchUrlMetadataJob).to receive(:perform_later)
   end
 
-  describe "#call!" do
-    subject(:service_call) { described_class.new(params, session_id: session_id).call! }
+  describe "#call" do
+    subject(:service_call) { described_class.call!(params, session_id, "example1.com") }
 
     it "successfully creates a new Url" do
       expect { service_call }.to change(Url, :count).by(1)
@@ -28,7 +28,7 @@ RSpec.describe CreateUrlService do
 
       it "raises an error" do
         expect {
-          described_class.new(params, session_id: session_id).call!
+          described_class.call!(params, session_id, "example1.com")
         }.to raise_error(error)
         expect(FetchUrlMetadataJob).not_to have_received(:perform_later)
         expect(Url.count).to eq(0)
