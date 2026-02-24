@@ -43,16 +43,18 @@ RSpec.describe ShortCodeGenerator do
       expect(decoded_id).to eq(123)
     end
 
-    it "raises error for nil ID" do
-      expect {
-        ShortCodeGenerator.encode(nil)
-      }.to raise_error(ArgumentError, "ID must be a positive integer")
-    end
+    context "when encoding invalid IDs" do
+      it "raises error for nil ID" do
+        expect {
+          ShortCodeGenerator.encode(nil)
+        }.to raise_error(ArgumentError, "ID must be a positive integer")
+      end
 
-    it "raises error for negative ID" do
-      expect {
-        ShortCodeGenerator.encode(-1)
-      }.to raise_error(ArgumentError, "ID must be a positive integer")
+      it "raises error for negative ID" do
+        expect {
+          ShortCodeGenerator.encode(-1)
+        }.to raise_error(ArgumentError, "ID must be a positive integer")
+      end
     end
   end
 
@@ -76,18 +78,6 @@ RSpec.describe ShortCodeGenerator do
       end
     end
 
-    it "returns nil for nil input" do
-      expect(ShortCodeGenerator.decode(nil)).to be_nil
-    end
-
-    it "returns nil for short code shorter than prefix length" do
-      expect(ShortCodeGenerator.decode("abc")).to be_nil
-    end
-
-    it "returns nil for invalid short code" do
-      expect(ShortCodeGenerator.decode("invalid!@#")).to be_nil
-    end
-
     it "works with custom prefix length" do
       original_id = 54321
       short_code = ShortCodeGenerator.encode(original_id, prefix_length: 5)
@@ -96,12 +86,26 @@ RSpec.describe ShortCodeGenerator do
       expect(decoded_id).to eq(original_id)
     end
 
-    it "returns nil when decoding with wrong prefix length" do
-      short_code = ShortCodeGenerator.encode(123, prefix_length: 7)
-      decoded_id = ShortCodeGenerator.decode(short_code, prefix_length: 3)
+    context "when decoding invalid short codes" do
+      it "returns nil for nil input" do
+        expect(ShortCodeGenerator.decode(nil)).to be_nil
+      end
 
-      # Decoded ID will be incorrect
-      expect(decoded_id).not_to eq(123)
+      it "returns nil for short code shorter than prefix length" do
+        expect(ShortCodeGenerator.decode("abc")).to be_nil
+      end
+
+      it "returns nil for invalid short code" do
+        expect(ShortCodeGenerator.decode("invalid!@#")).to be_nil
+      end
+
+      it "returns nil when decoding with wrong prefix length" do
+        short_code = ShortCodeGenerator.encode(123, prefix_length: 7)
+        decoded_id = ShortCodeGenerator.decode(short_code, prefix_length: 3)
+
+        # Decoded ID will be incorrect
+        expect(decoded_id).not_to eq(123)
+      end
     end
   end
 end
