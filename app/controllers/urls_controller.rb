@@ -5,15 +5,18 @@ class UrlsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
   def new
+    Rails.logger.info("Rendering new URL form")
     session[:initialized] ||= true
     @url = Url.new
   end
 
   def create
+    Rails.logger.info("Creating a new URL with params: " + url_params.to_h.inspect)
     session_id = request.session.id.to_s
-    @url = CreateUrlService.new(url_params, session_id: session_id).call!
+    @url = CreateUrlService.call!(url_params, session_id, request.host)
+    Rails.logger.info("Successfully created URL with short_code: #{@url.short_code}")
     flash[:short_code] = @url.short_code
-    redirect_to root_path
+    redirect_to root_path, notice: "URL with #{@url.short_code} created!"
   rescue ActiveRecord::RecordInvalid => e
     Rails.logger.error("Validation failed: #{e.record.errors.full_messages.join(", ")}")
     render_new_with_errors(e.record)
@@ -23,7 +26,8 @@ class UrlsController < ApplicationController
   end
 
   def show
-    @visits, @next_page = ShowUrlService.new(url: @url, page: params[:page]).call
+    Rails.logger.info("Showing URL details for short_code: #{@url.short_code}")
+    @visits, @next_page = ShowUrlService.call(@url, params[:page])
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -31,16 +35,19 @@ class UrlsController < ApplicationController
   end
 
   def deactivate
+    Rails.logger.info("Deactivating URL with short_code: #{@url.short_code}")
     if @url.update(is_active: false)
+      Rails.logger.info("Successfully deactivated URL with short_code: #{@url.short_code}")
       redirect_to root_path, notice: "URL with #{@url.short_code} deleted!"
     else
-      Rails.logger.error @url.errors.full_messages
+      Rails.logger.error(@url.errors.full_messages)
       redirect_to root_path, alert: "Failed to delete URL with #{@url.short_code}. Please try again."
     end
   end
 
   def redirect
-    CreateVisitService.new(@url, request).call!
+    Rails.logger.info("Redirecting to target URL for short_code: #{@url.short_code}")
+    CreateVisitService.call!(@url, request)
   rescue => e
     Rails.logger.warn("Error creating visit for URL #{@url.short_code}: #{e.message}")
   ensure
@@ -55,6 +62,7 @@ class UrlsController < ApplicationController
   end
 
   def set_url
+    Rails.logger.info("Fetching URL with short_code: #{params[:short_code]}")
     @url = Url.find_by!(short_code: params[:short_code])
   end
 
