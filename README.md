@@ -68,3 +68,68 @@ DevOps / Infrastructure
 - Cache miss → queries Postgres, stores result in Redis for next time
 
 </details>
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Ruby 3.4.8+
+- PostgreSQL 16.2+
+- Redis 7.2.4+
+- Docker & Docker Compose (Optional, for containerized development)
+
+> **Note:** 
+> 
+> For local development, you can either set up PostgreSQL and Redis manually or use Docker Compose with the provided `docker-compose.dev.yml` file.
+
+### Installation Steps
+
+1. **Clone the Repository**
+    ```bash
+    git clone https://github.com/kyleong/url-shortener.git
+    cd url-shortener
+    ```
+
+2. **Set Up Environment Variables**
+    Create a `.env` file in the root directory based on the `.env.example`
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    Fill in the required values in the `.env` file.
+
+    > **Tips:** 
+    >
+    > If using Docker, you can use the same credentials as defined in the `.env.example` file and change the `DB_PASSWORD` and `REDIS_PASSWORD`.
+    >
+    > For local development, ensure your PostgreSQL and Redis instances are running and accessible with the credentials you provide.
+
+3. **Set Up Docker (Optional)**
+    If you prefer using Docker, start the postgres and redis services with:
+
+    ```bash
+    docker-compose -f docker-compose.dev.yml up -d
+    ```
+
+    This will start PostgreSQL and Redis containers with the configurations specified in the `docker-compose.dev.yml` file.
+    
+    > **NOTE:** 
+    >
+    > Skip this step if you have PostgreSQL and Redis set up locally.
+
+4. **Install Dependencies**
+    ```bash
+    bundle install
+    ```
+
+5. **Set Up the Database**
+    ```bash
+    rails db:create
+    rails db:migrate
+    ```
+
+6. **Start the Application**
+    ```bash
+    bin/dev
+    ```
