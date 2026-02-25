@@ -4,7 +4,7 @@
 # to make the web console appear.
 development:
   adapter: redis
-  url: <%= "redis://#{ENV['REDIS_HOST']}:#{ENV['REDIS_PORT']}/1" %>
+  url: <%= "redis://:#{ENV['REDIS_PASSWORD']}@#{ENV['REDIS_HOST']}:#{ENV['REDIS_PORT']}/1" %>
 
 test:
   adapter: test
