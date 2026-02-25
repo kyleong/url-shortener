@@ -62,9 +62,12 @@ To deploy your own version, follow these following steps.
     SECRET_KEY_BASE=
     ```
 
+    > **Note:**
+    > The `SECRET_KEY_BASE` can be generated using `rails secret` command in your local machine.
+
 7. **Ensure the config is Correct**
 
-    You can refer to the set set environment variables with:
+    You can refer to the set environment variables with:
     ```bash
     dokku config url-shortener-app
     ```
@@ -102,8 +105,6 @@ Follow the steps below to enable SSL for your Dokku app.
 
 1. **Install the Let's Encrypt Plugin**
 
-   Install the Let's Encrypt plugin for Dokku:
-
    ```bash
    sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
    ```
@@ -126,3 +127,7 @@ Follow the steps below to enable SSL for your Dokku app.
     ```
     dokku letsencrypt:cron-job --add
     ```
+
+5. **Verify SSL is Working**
+
+   After setting up SSL, you can verify that your application is accessible via HTTPS by visiting `https://url-shortener-app.<your-dokku-server-domain>`
