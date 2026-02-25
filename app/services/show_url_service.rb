@@ -14,9 +14,7 @@ class ShowUrlService < ApplicationService
     .limit(PER_PAGE)
     .offset(offset)
 
-    total_visits = Rails.cache.fetch("url:#{@url.id}:visit_count", expires_in: 5.minutes) do
-      @url.visits.count
-    end
+    total_visits = @url.visits.count
     next_page = total_visits > @page * PER_PAGE ? @page + 1 : nil
 
     [ visits, next_page ]
