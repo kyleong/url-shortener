@@ -3,7 +3,7 @@
     <div class="flex items-center gap-2 overflow-hidden">
       <h2 class="text-primary text-2xl font-bold break-all"><%= short_url(url) %></h2>
       <div>
-        <%= lucide_icon("copy", class: "cursor-pointer duration-200 stroke-primary", onclick: "navigator.clipboard.writeText('#{short_url(url)}')",  size:16, data: { action: "click->toast#show", toast_message_param: "ℹ️ Copied #{short_url(url)}",}) %>
+        <%= lucide_icon("copy", class: "cursor-pointer duration-200 stroke-primary", size:16, data: { action: "click->clipboard#copy click->toast#show", clipboard_text_param: short_url(url), toast_message_param: "ℹ️ Copied #{short_url(url)}" }) %>
       </div>
     </div>
     <%= link_to lucide_icon("external-link", size:16) + " Visit" , short_url(url, with_protocol: true), class: "btn btn-neutral", target: "_blank" %>
