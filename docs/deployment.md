@@ -1,8 +1,8 @@
 # 🔗 URL Shortener - CoinGecko Engineering Written Assignment
 
-## 🚀 Deployment
-
 The deployment only focuses on single server deployment on a Dokku instance. 
+
+## 🚀 Deployment
 
 Dokku provides a Heroku-like experience for deploying applications, making it easier to manage and scale your application without needing to worry about the underlying infrastructure.
 
@@ -13,7 +13,7 @@ To deploy your own version, follow these following steps.
 - Server with Dokku installed and configured
 - Git installed on your local machine.
 
-### Getting Started
+### Deployment Steps
 
 1. **Set Up Dokku**
 
@@ -81,5 +81,48 @@ To deploy your own version, follow these following steps.
     git push dokku master
     ```
 
+9. **Sidekiq Worker**
+
+    After deploying the application, you need to ensure that the Sidekiq worker is running. You can start the Sidekiq worker on Dokku with the following command:
+  
+    ```bash
+    dokku ps:scale url-shortener-app web=1 worker=1
+    ```    
+
 9. **Access Your Application**
     Once the deployment is complete, you can access your application at `http://url-shortener-app.<your-dokku-server-domain>`
+
+## 🚀 Post-Deployment Setup
+
+Setting up SSL with Let's Encrypt is crucial for securing your application. 
+
+Follow the steps below to enable SSL for your Dokku app.
+
+### Setting Up SSL with Let's Encrypt
+
+1. **Install the Let's Encrypt Plugin**
+
+   Install the Let's Encrypt plugin for Dokku:
+
+   ```bash
+   sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+   ```
+
+2. **Set Your Email for Let's Encrypt**
+
+   Set your email address for Let's Encrypt to receive notifications about certificate renewals and other important information:
+
+   ```bash
+   dokku letsencrypt:set url-shortener-app email <your email>
+   ```    
+   
+3. **Enable Let's Encrypt for Your App**
+
+    ```
+    dokku letsencrypt url-shortener-app
+    ```
+
+4. **Set Up Automatic Renewal**
+    ```
+    dokku letsencrypt:cron-job --add
+    ```
