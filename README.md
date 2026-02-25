@@ -41,7 +41,8 @@ DevOps / Infrastructure
 - Web handles HTTP requests, Worker handles background jobs.
 - Both connect to Redis and Postgres, hence the crossing arrows.
 
-### In-Depth Explanation
+<details>
+<summary>Click to Expand In-Depth Explanation</summary>
 
 #### Background Jobs with Sidekiq + Redis
 
@@ -65,3 +66,5 @@ DevOps / Infrastructure
 - Browser sends a request → Controller → Model checks Redis **DB 2** first
 - Cache hit → returns immediately, skips Postgres
 - Cache miss → queries Postgres, stores result in Redis for next time
+
+</details>
