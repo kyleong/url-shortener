@@ -156,9 +156,13 @@ To run the test suite, execute:
 bundle exec rspec
 ```
 
+## 🎯 Strategies used
+
+Please refer to the [strategies used](./docs/strategy.md) for more information.
+
 ## 🚀 Deployment
 
-The application is deployed on a Dokku instance. To deploy your own version, follow these steps:
+Please refer to the [deployment guide](./docs/ deployment.md) for more information.
 
 ## Folder Structure
 
