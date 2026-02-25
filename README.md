@@ -41,33 +41,7 @@ A simple, URL Shortener service built as part of the CoinGecko Engineering Writt
 - Web handles HTTP requests, Worker handles background jobs.
 - Both connect to Redis and Postgres, hence the crossing arrows.
 
-<details>
-<summary>Click to Expand In-Depth Explanation</summary>
-
-#### Background Jobs with Sidekiq + Redis
-
-![URL Shortener Architecture - DB 0](./assets/architecture-db0.png)
-
-- Browser sends a request → Controller pushes a Job to Redis **DB 0** (queue)
-- Sidekiq (Worker) polls Redis, picks up the job, and reads/writes it via the Model
-
-#### Real-time Updates with Action Cable + Redis Pub/Sub
-
-![URL Shortener Architecture - DB 1](./assets/architecture-db1.png)
-
-- Browser opens a WebSocket connection to Action Cable
-- When a job or model update occurs, it publishes to Redis **DB 1** (Pub/Sub)
-- Action Cable subscribes to Redis and pushes the update to the browser instantly
-
-#### Caching with Redis
-
-![URL Shortener Architecture - DB 2](./assets/architecture-db2.png)
-
-- Browser sends a request → Controller → Model checks Redis **DB 2** first
-- Cache hit → returns immediately, skips Postgres
-- Cache miss → queries Postgres, stores result in Redis for next time
-
-</details>
+For more in-depth information, please refer to the [strategies used](./docs/strategy.md) document.
 
 ## 🚀 Getting Started
 
@@ -162,7 +136,7 @@ Please refer to the [strategies used](./docs/strategy.md) for more information.
 
 ## 🚀 Deployment
 
-Please refer to the [deployment guide](./docs/ deployment.md) for more information.
+Please refer to the [deployment guide](./docs/deployment.md) for more information.
 
 ## Folder Structure
 
