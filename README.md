@@ -131,6 +131,8 @@ To run the test suite, execute:
 bundle exec rspec
 ```
 
+This will generate a test coverage report in the `coverage/` directory. Open `coverage/index.html` in your browser to view the detailed coverage report.
+
 ## 🎯 Strategies used
 
 Please refer to the [strategies used](./docs/strategy.md) for more information.

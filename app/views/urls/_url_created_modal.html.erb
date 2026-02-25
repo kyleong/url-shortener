@@ -12,7 +12,7 @@
         <div class="flex gap-2 items-center">
           <%= link_to short_url(flash[:short_code]), short_url(flash[:short_code], with_protocol: true), class: "text-lg text-primary break-all hover:underline", target: "_blank" %>
           <div>
-            <%= lucide_icon( "copy", class: "cursor-pointer", data: { action: "click->clipboard#copy click->toast#show", clipboard_text_param: short_url(flash[:short_code]), toast_message_param: "ℹ️ Copied #{short_url(flash[:short_code])}" }, size: 20) %>
+            <%= lucide_icon( "copy", class: "cursor-pointer stroke-primary", data: { action: "click->clipboard#copy click->toast#show", clipboard_text_param: short_url(flash[:short_code]), toast_message_param: "ℹ️ Copied #{short_url(flash[:short_code])}" }, size: 20) %>
           </div>
         </div>
       </div>
