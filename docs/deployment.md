@@ -2,6 +2,10 @@
 
 The deployment only focuses on single server deployment on a Dokku instance. 
 
+## ⚠️ Limitations:
+- The application will be deployed on a single Dokku server, which includes the databases (PostgreSQL and Redis) running on the same server as the application.
+- The deployment process will be done manually via Dokku CLI, without automation through CI/CD pipelines.
+
 ## 🚀 Deployment
 
 Dokku provides a Heroku-like experience for deploying applications, making it easier to manage and scale your application without needing to worry about the underlying infrastructure.
