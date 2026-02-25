@@ -204,6 +204,6 @@ Procfile                # Process file for production
 - Public service with no authentication and no user accounts.
 - Single instance deployment (no horizontal scaling, but designed to be horizontally scalable).
 - IPv4 geolocation sufficient.
-- No rate limiting.
+- Rate limiting and only allow 5 URL shortening requests per session (browser).
 - No malicious content filtering implemented (user can shorten any URL, including potentially harmful ones).
 - No staging environment or CI/CD pipeline set up for this assignment.

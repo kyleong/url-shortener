@@ -70,6 +70,15 @@ To avoid conflicts between these different uses of Redis, we utilize **Redis log
 - DB 1: Pub/Sub for Action Cable
 - DB 2: Caching Layer
 
+## 📌 Database Design
+
+The database schema consists of two main tables: `urls` and `visits`.
+
+- The `urls` table stores the original URL, the generated short code, and metadata such as creation timestamp and visit count.
+- The `visits` table records each visit to a short URL, including the timestamp, visitor's IP address, and geolocation data.
+
+![URL Shortener Database Schema](../assets/database-schema.png)
+
 ## 📌 Background jobs
 
 Ruby on Rails comes with [Solid Queue](https://guides.rubyonrails.org/active_job_basics.html) as the default background job framework. 
@@ -167,7 +176,7 @@ The URL Shortener is built for scalability using stateless web servers, PostgreS
 
 While the current deployment is on a single Dokku server, the architecture allows for horizontal scaling by adding more web or worker instances as traffic grows.
 
-Some strategies that already done includes:
+Implemented strategies include:
 - **Redis** powers caching, background jobs (Sidekiq), and real-time pub/sub (Action Cable), with logical DB separation to reduce contention.
 - **Caching** minimizes database load and improves response times.
 - **Background Jobs** offload heavy tasks from the request cycle, allowing the web server to remain responsive under load.
