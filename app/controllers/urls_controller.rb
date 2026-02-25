@@ -15,6 +15,7 @@ class UrlsController < ApplicationController
     session_id = request.session.id.to_s
     @url = CreateUrlService.call!(url_params, session_id, request.host)
     Rails.logger.info("Successfully created URL with short_code: #{@url.short_code}")
+    Rails.cache.delete("session:#{session_id}:urls")
     flash[:short_code] = @url.short_code
     redirect_to root_path, notice: "URL with #{@url.short_code} created!"
   rescue ActiveRecord::RecordInvalid => e
@@ -38,6 +39,8 @@ class UrlsController < ApplicationController
     Rails.logger.info("Deactivating URL with short_code: #{@url.short_code}")
     if @url.update(is_active: false)
       Rails.logger.info("Successfully deactivated URL with short_code: #{@url.short_code}")
+      Rails.cache.delete("url:#{@url.short_code}")
+      Rails.cache.delete("session:#{@url.session_id}:urls")
       redirect_to root_path, notice: "URL with #{@url.short_code} deleted!"
     else
       Rails.logger.error(@url.errors.full_messages)
@@ -62,8 +65,11 @@ class UrlsController < ApplicationController
   end
 
   def set_url
-    Rails.logger.info("Fetching URL with short_code: #{params[:short_code]}")
-    @url = Url.find_by!(short_code: params[:short_code])
+    short_code = params[:short_code]
+    Rails.logger.info("Fetching URL with short_code: #{short_code}")
+    @url = Rails.cache.fetch("url:#{short_code}", expires_in: 1.hour) do
+      Url.find_by!(short_code: short_code)
+    end
   end
 
   def url_params
@@ -71,7 +77,10 @@ class UrlsController < ApplicationController
   end
 
   def load_urls
-    @urls = SessionUrlsQuery.new(request.session.id.to_s).call
+    session_id = request.session.id.to_s
+    @urls = Rails.cache.fetch("session:#{session_id}:urls", expires_in: 5.minutes) do
+      SessionUrlsQuery.new(session_id).call
+    end
   end
 
   def render_not_found_response(exception)
