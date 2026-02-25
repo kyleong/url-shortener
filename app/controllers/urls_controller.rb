@@ -68,7 +68,7 @@ class UrlsController < ApplicationController
     short_code = params[:short_code]
     Rails.logger.info("Fetching URL with short_code: #{short_code}")
     @url = Rails.cache.fetch("url:#{short_code}", expires_in: 1.hour) do
-      Url.find_by!(short_code: short_code)
+      Url.find_by!(short_code: short_code, is_active: true)
     end
   end
 
