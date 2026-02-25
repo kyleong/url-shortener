@@ -131,8 +131,8 @@ On top of tailwind css, we decided to utilize a pre-built component library call
 This allowed us to focus more on the core functionality and less on styling details, while still delivering a clean and responsive user interface.
 
 <div style="display: flex; gap: 16px; align-items: flex-start;">
-	<img src="../assets/screenshot-dark.png" alt="URL Shortener Screenshot Dark" style="height: 320px; object-fit: contain;" />
-	<img src="../assets/screenshot-mobile.jpeg" alt="URL Shortener Screenshot Mobile" style="height: 320px; object-fit: contain;" />
+	<img src="../assets/screenshot-dark.png" alt="URL Shortener Screenshot Dark" style="height: 450px; object-fit: contain;" />
+	<img src="../assets/screenshot-mobile.jpeg" alt="URL Shortener Screenshot Mobile" style="height: 450px; object-fit: contain;" />
 </div>
 <p align="center" style="margin-top: 8px; font-size: 0.98em; color: #666;">
 <em>Left: Dark mode UI. Right: Mobile responsive layout.</em>
