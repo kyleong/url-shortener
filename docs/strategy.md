@@ -178,5 +178,3 @@ Some strategies that already done includes:
 - **Database Scaling**: PostgreSQL supports vertical scaling and read replicas; Redis supports clustering and sharding for higher throughput.
 - **Web servers and workers replication**: Add more stateless web server and worker replicas to handle increased traffic, with a load balancer to distribute requests.
 - **Advanced Caching**: Implement advanced caching strategies, such as cache invalidation and cache warming, to further reduce database load and improve response times.
-
-Overall, the system scales horizontally by increasing web and worker instances as demand grows.

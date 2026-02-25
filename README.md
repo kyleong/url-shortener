@@ -41,7 +41,7 @@ A simple, URL Shortener service built as part of the CoinGecko Engineering Writt
 - Web handles HTTP requests, Worker handles background jobs.
 - Both connect to Redis and Postgres, hence the crossing arrows.
 
-For more in-depth information, please refer to the [strategies used](./docs/strategy.md) document.
+For more in-depth information, please refer to the [strategies used](#-strategies-used) and [deployment guide](./docs/deployment.md) document.
 
 ## 🚀 Getting Started
 
@@ -114,6 +114,7 @@ For more in-depth information, please refer to the [strategies used](./docs/stra
    This will start both the Rails server and Sidekiq worker concurrently.
 
 7. **Access the Application**
+
    Open your browser and navigate to `http://localhost:3000` to see the URL Shortener in action!
 
 ## 🧪 Running Tests
