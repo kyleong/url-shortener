@@ -1,24 +1,67 @@
-# README
+# 🔗 URL Shortener - CoinGecko Engineering Written Assignment
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Live: https://url-shortener-app.89.167.96.36.sslip.io/
 
-Things you may want to cover:
+![URL Shortener Screenshot](./assets/screenshot.png)
 
-* Ruby version
+A simple, URL Shortener service built as part of the CoinGecko Engineering Written Assignment.
 
-* System dependencies
+## ⭐ Features
 
-* Configuration
+- Shorten URLs with unique short codes
+- Track visits with metadata (timestamp, IP, geolocation)
+- Paginated visit history for each short URL
+- Background processing for metadata fetching and geolocation
+- Real-time updates on visit counts and recent activity
+- Mobile responsiveness and dark mode
 
-* Database creation
+## 🛠 Tech Stack
 
-* Database initialization
+Backend
+- Ruby on Rails — Web framework and MVC architecture
+- PostgreSQL — Primary relational database
+- Redis — Caching, Sidekiq, and Action Cable adapter
+- Sidekiq — Background job processing for metadata fetching and geolocation
+- RSpec — Testing framework
 
-* How to run the test suite
+Frontend
+- Tailwind CSS + DaisyUI — Utility-first styling and UI components
 
-* Services (job queues, cache servers, search engines, etc.)
+DevOps / Infrastructure
+- Docker — Containerized development and deployment
+- Dokku — Self-hosted PaaS deployment platform
 
-* Deployment instructions
+## 🏗 Architecture
 
-* ...
+### High-Level Overview
+
+![URL Shortener Architecture](./assets/architecture.png)
+
+- Web and Worker are two separate containers from the same Dokku app, sharing the same Redis and Postgres instances.
+- Web handles HTTP requests, Worker handles background jobs.
+- Both connect to Redis and Postgres, hence the crossing arrows.
+
+### In-Depth Explanation
+
+#### Background Jobs with Sidekiq + Redis
+
+![URL Shortener Architecture - DB 0](./assets/architecture-db0.png)
+
+- Browser sends a request → Controller pushes a Job to Redis **DB 0** (queue)
+- Sidekiq (Worker) polls Redis, picks up the job, and reads/writes it via the Model
+
+#### Real-time Updates with Action Cable + Redis Pub/Sub
+
+![URL Shortener Architecture - DB 1](./assets/architecture-db1.png)
+
+- Browser opens a WebSocket connection to Action Cable
+- When a job or model update occurs, it publishes to Redis **DB 1** (Pub/Sub)
+- Action Cable subscribes to Redis and pushes the update to the browser instantly
+
+#### Caching with Redis
+
+![URL Shortener Architecture - DB 2](./assets/architecture-db2.png)
+
+- Browser sends a request → Controller → Model checks Redis **DB 2** first
+- Cache hit → returns immediately, skips Postgres
+- Cache miss → queries Postgres, stores result in Redis for next time
