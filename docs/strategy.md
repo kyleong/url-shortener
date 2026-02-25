@@ -89,7 +89,7 @@ Code References:
 
 ## 🔌 Action Cable
 
-Whenever an event happens that requires the frontend to update in real time (e.g. a new visit is created, or visit count is updated), it is required to have a real-time communication channel between the backend and frontend to push updates to the client without the need for the client to poll for changes.
+Whenever an event happens that requires the frontend to update in real time like a new visit is created, it is required to have a real-time communication channel between the backend and frontend to push updates to the client without the need for the client to poll for changes.
 
 We chose to use [Action Cable](https://guides.rubyonrails.org/action_cable_overview.html) that comes in Ruby on Rails, with [Redis](https://redis.io/) as the adapter to implement this real-time communication channel and [Turbo Streams](https://turbo.hotwired.dev/handbook/streams) to update the frontend.
 
@@ -147,6 +147,7 @@ To ensure the security of the URL Shortener service, we implemented several meas
 - **Content Security Policy**: Content Security Policy (CSP) header has been set to mitigate cross-site scripting (XSS) attacks and other code injection vulnerabilities.
 - **Permissions Policy**:  A strict Permissions Policy has been set to prevent abuse of powerful browser features and protect user privacy.
 - **HTTPS**: HTTPS has been enforced to encrypt data in transit and protect user privacy.
+- **Rate Limiting**: Rate limiting prevents abuse of the URL shortening service and protects against denial-of-service (DoS) attacks.
 - **Input Validation**: Users inputs are validated and sanitized to prevent injection attacks and ensure data integrity.
 
 ## 🚀 Deployment
