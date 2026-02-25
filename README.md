@@ -9,6 +9,8 @@ Live: https://url-shortener-app.89.167.96.36.sslip.io/
 
 A simple, URL Shortener service built as part of the CoinGecko Engineering Written Assignment.
 
+Demo video: https://url-shortener-app.89.167.96.36.sslip.io/XtWHvdRM
+
 ## ⭐ Features
 
 - Shorten URLs with unique short codes
