@@ -77,6 +77,8 @@ gem "sidekiq"
 
 gem "redis"
 
+gem "rack-attack", "~> 6.5"
+
 gem "tailwindcss-rails", "~> 4.4"
 
 gem "geocoder", "~> 1.8"
