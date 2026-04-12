@@ -1,15 +1,10 @@
-# 🔗 URL Shortener - CoinGecko Engineering Written Assignment
-
-> **Note:**
-> 2nd part of the assignment is in the `extensions/submission` folder. Please refer to the [submission folder](./extensions/submission) for more information.
-
-Live: https://url-shortener-app.89.167.96.36.sslip.io/
+# 🔗 URL Shortener
 
 ![URL Shortener Screenshot](./assets/screenshot.png)
 
-A simple, URL Shortener service built as part of the CoinGecko Engineering Written Assignment.
+A simple, URL Shortener service built using Ruby on Rails.
 
-Demo video: https://url-shortener-app.89.167.96.36.sslip.io/XtWHvdRM
+Demo video: https://www.youtube.com/watch?v=siSjp1AQU6I
 
 ## ⭐ Features
 
