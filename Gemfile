@@ -83,6 +83,6 @@ gem "tailwindcss-rails", "~> 4.4"
 
 gem "geocoder", "~> 1.8"
 
-gem "lucide-rails", "~> 0.7.3"
+gem "lucide-rails", "~> 0.7.4"
 
 gem "rails-controller-testing"
